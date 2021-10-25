@@ -1,3 +1,4 @@
+# 凡科网，点击登录后，会进行图形验证，暂时先不做
 import requests
 import execjs
 
