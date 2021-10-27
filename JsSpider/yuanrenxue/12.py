@@ -19,11 +19,11 @@ if __name__ == '__main__':
         headers = {
             'user-agent': 'yuanrenxue.project',
             'referer': 'https://match.yuanrenxue.com/match/12',
-            'cookie': 'vaptchaNetway=cn; Hm_lvt_0362c7a08a9a04ccf3a8463c590e1e2f=1635232738; Hm_lvt_c99546cf032aaa5a679230de9a95c7db=1635230397,1635299408; Hm_lvt_9bcbda9cbf86757998a2339a0437208e=1635232542,1635299408; no-alert3=true; tk=-5571397726181509472; sessionid=jbzwkkh8ma1dowq2jb6e2wmd85a8amow; Hm_lpvt_9bcbda9cbf86757998a2339a0437208e=1635318997; Hm_lpvt_c99546cf032aaa5a679230de9a95c7db=1635318999'
+            'cookie': 'sessionid=jbzwkkh8ma1dowq2jb6e2wmd85a8amow;'
         }
         resp = requests.get(url=start_url,headers=headers).json()
         for j in resp['data']:
             list.append(j['value'])
-    print(list)
+    # print(list)
     sum = sum(list)
     print(sum)
