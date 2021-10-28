@@ -40,9 +40,14 @@ def main():
     #
     # j_key = hashlib.md5(base64.b64encode((resp['key'] + resp['value']).encode()).replace(b'=', b'')).hexdigest()
     list = []
-    for i in range(1,6):
-        url = 'https://match.yuanrenxue.com/api/match/4?page={}'.format(1)
-        response = requests.get(url)
+    for j in range(1,6):
+        url = 'https://match.yuanrenxue.com/api/match/4?page={}'.format(j)
+        headers = {
+            'user-agent': 'yuanrenxue.project',
+            'referer': 'https://match.yuanrenxue.com/match/4',
+            'cookie': 'sessionid=6hbehfd0w4y3f0g3h43lyzp6qcedyuyj;'
+        }
+        response = requests.get(url,headers = headers)
         response = json.loads(response.text)
         j_key = hashlib.md5(base64.b64encode((response['key'] + response['value']).encode()).replace(b'=', b'')).hexdigest()
         # print(j_key)
@@ -61,11 +66,10 @@ def main():
                     out[i + imgstyle] = img_dict[number]
                     i += 1
             out = ''.join(out)
-
-            # out = json.dumps(out)
-            list.append(out)
+            list.append(int(out))
+    print(list)
     # for i in range(0,50):
-    num = sum(int(list[0])+int(list[1]))
+    num = sum(list)
     print(num)
 if __name__ == '__main__':
     main()
