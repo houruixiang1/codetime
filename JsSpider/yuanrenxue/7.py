@@ -64,7 +64,11 @@ for i in name_list:
     real_name_list.append(name)
 # print(real_name_list)
 dic = dict(map(lambda x,y:[x,y],real_name_list,list1))
-print(dic)
+# print(len(dic))
+# print(max(dic.values()))
+for key,value in dic.items():
+    if(value == max(dic.values())):
+        print(key,value)
 
 
 
