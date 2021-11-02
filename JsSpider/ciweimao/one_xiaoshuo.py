@@ -69,6 +69,7 @@ def main():
     # '''
     # js = js + info
     # print(js)
+    # ctc = node.compile(info,cwd=r'C:\CodeTime\node_modules')
     ctc = node.compile(info)
     funcName = 'get_data()'
     # funcName = 'get_data("{0}","{1}","{2}")'.format(accesskey,content,key)
