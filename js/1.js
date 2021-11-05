@@ -202,7 +202,7 @@ for (var b = 0; b < d.length * 4; b += 3) {
 return f
 };
 
-function get_m(timestamp) {
-
+function get_m() {
+var timestamp = '1636107971000';
 return hex_md5('\x27' + timestamp.toString() + '\x27')
 }
