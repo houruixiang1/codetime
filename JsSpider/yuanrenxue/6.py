@@ -35,7 +35,7 @@ for i in range(1,6):
     # print(type(resp))
     for j in resp['data']:
         get_html_list.append(j)
-        list3.append(j[value])
+        list3.append(j['value'])
     # print(list)
     # print(get_html_list)
     node = execjs.get()
