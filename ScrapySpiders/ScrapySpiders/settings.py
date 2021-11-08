@@ -20,12 +20,12 @@ USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTM
 ROBOTSTXT_OBEY = False
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
-#CONCURRENT_REQUESTS = 32
+CONCURRENT_REQUESTS = 8
 
 # Configure a delay for requests for the same website (default: 0)
 # See https://docs.scrapy.org/en/latest/topics/settings.html#download-delay
 # See also autothrottle settings and docs
-#DOWNLOAD_DELAY = 3
+DOWNLOAD_DELAY = 0.5
 # The download delay setting will honor only one of:
 #CONCURRENT_REQUESTS_PER_DOMAIN = 16
 #CONCURRENT_REQUESTS_PER_IP = 16
@@ -50,10 +50,36 @@ ROBOTSTXT_OBEY = False
 
 # Enable or disable downloader middlewares
 # See https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
-#DOWNLOADER_MIDDLEWARES = {
-#    'ScrapySpiders.middlewares.ScrapyspidersDownloaderMiddleware': 543,
-#}
+DOWNLOADER_MIDDLEWARES = {
+    # 禁用Scrapy自带的代理中间件与UA中间件，启用用户自定义的中间件
+    'scrapy.downloadermiddleware.useragent.UserAgentMiddleware': None,
+    'scrapy.contrib.downloadermiddleware.httpproxy.HttpProxyMiddleware': None,
+    # 'TemplateSpider.middlewares.RandomUaAndProxyIpMiddleware': 400,
+    'ScrapySpiders.middlewares.RandomUaAndProxyIpMiddleware': None,
+    # 'ScrapySpiders.middlewares.RetryMiddleware': 544,
+}
 
+SCHEDULER = "scrapy_redis.scheduler.Scheduler"
+
+DUPEFILTER_CLASS = "scrapy_redis.dupefilter.RFPDupeFilter"
+
+SCHEDULER_QUEUE_CLASS = "scrapy_redis.queue.SpiderPriorityQueue"
+
+DUPEFILTER_DEBUG = True
+
+SCHEDULER_PERSIST = True
+
+MONGO_HOST = '127.0.0.1'
+MONGO_PORT = 27017
+DB_NAME = 'people'
+
+
+REDIS_HOST = '127.0.0.1'
+# REDIS_PARAMS = {
+#             'password': '123456',
+#         }
+REDIS_PORT = 6379
+SCHEDULER_DUPEFILTER_KEY = '00001:dupefilter'
 # Enable or disable extensions
 # See https://docs.scrapy.org/en/latest/topics/extensions.html
 #EXTENSIONS = {
@@ -62,9 +88,9 @@ ROBOTSTXT_OBEY = False
 
 # Configure item pipelines
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
-#ITEM_PIPELINES = {
-#    'ScrapySpiders.pipelines.ScrapyspidersPipeline': 300,
-#}
+ITEM_PIPELINES = {
+   'ScrapySpiders.pipelines.ScrapyspidersPipeline': 300,
+}
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See https://docs.scrapy.org/en/latest/topics/autothrottle.html
@@ -86,3 +112,12 @@ ROBOTSTXT_OBEY = False
 #HTTPCACHE_DIR = 'httpcache'
 #HTTPCACHE_IGNORE_HTTP_CODES = []
 #HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
+PROXY_API = 'count=0'
+
+MYEXT_ENABLED = True  # 开启扩展
+IDLE_NUMBER = 20  # 配置空闲持续时间单位为 360个 ，一个时间单位为5s
+
+# 在 EXTENSIONS 配置，激活扩展
+EXTENSIONS = {
+    'ScrapySpiders.extensions.RedisSpiderSmartIdleClosedExensions': 500,
+}
