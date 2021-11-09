@@ -25,7 +25,7 @@ for lol in Lol:
     print(pic_url)
     response = requests.get(pic_url,headers)
 
-    with open('./LOLpic/'+anchor,'wb')as f:
+    with open('./LOLpic/'+anchor+'.jpg','wb')as f:
         f.write(response.content)
     print("图片下载成功...%s"%anchor)
 
