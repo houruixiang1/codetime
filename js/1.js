@@ -203,6 +203,6 @@ return f
 };
 
 function get_m() {
-var timestamp = '1636107971000';
-return hex_md5('\x27' + timestamp.toString() + '\x27')
+    var timestamp = Date.parse(new Date()) + 100000000;
+    return hex_md5(timestamp.toString()) + encodeURI('丨') + timestamp / 1000;
 }
