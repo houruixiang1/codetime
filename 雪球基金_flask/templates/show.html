@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <script src="static/assets/js/echarts.min.js"></script>
+
+  <title>雪球基金数据分析</title>
+  <meta content="" name="descriptison">
+  <meta content="" name="keywords">
+
+  <!-- Favicons -->
+  <link href="static/assets/img/favicon.png" rel="icon">
+  <link href="static/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,600,600i,700,700i,900" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="static/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="static/assets/vendor/icofont/icofont.min.css" rel="stylesheet">
+  <link href="static/assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+  <link href="static/assets/vendor/animate.css/animate.min.css" rel="stylesheet">
+  <link href="static/assets/vendor/venobox/venobox.css" rel="stylesheet">
+  <link href="static/assets/vendor/aos/aos.css" rel="stylesheet">
+
+  <!-- Template Main CSS File -->
+  <link href="static/assets/css/style.css" rel="stylesheet">
+
+  <!-- =======================================================
+  * Template Name: Mamba - v2.0.1
+  * Template URL: https://bootstrapmade.com/mamba-one-page-bootstrap-template-free/
+  * Author: BootstrapMade.com
+  * License: https://bootstrapmade.com/license/
+  ======================================================== -->
+</head>
+
+<body>
+
+  <!-- ======= Header ======= -->
+  <header id="header">
+    <div class="container">
+
+      <div class="logo float-left">
+        <h1 class="text-light"><a href="index.html"><span>雪球基金</span></a></h1>
+        <!-- Uncomment below if you prefer to use an image logo -->
+        <!-- <a href="temp.html"><img src="static/assets/img/logo.png" alt="" class="img-fluid"></a>-->
+      </div>
+
+      <nav class="nav-menu float-right d-none d-lg-block">
+        <ul>
+          <li class="active"><a href="/index">首页</a></li>
+          <li><a href="/fund">雪球基金300</a></li>
+          <li><a href="/show">可视化展示</a></li>
+          <li><a href="/word">词云</a></li>
+          <li><a href="/team">团队</a></li>
+        </ul>
+      </nav><!-- .nav-menu -->
+
+    </div>
+  </header><!-- End Header -->
+
+    <!-- ======= Our Team Section ======= -->
+    <section id="team" class="team">
+      <div class="container">
+
+        <div class="section-title">
+          <h2>雪球基金top10展示图</h2>
+          <h3>
+            <a href="/main">可视化大屏</a>
+          </h3>
+        </div>
+
+      </div>
+    </section><!-- End Our Team Section -->
+
+      <!-- ======= Counts Section ======= -->
+    <section class="counts section-bg">
+      <div class="container">
+        <div id="main" style="width: 1000px;height:600px;"></div>
+        <script type="text/javascript">
+        var myChart = echarts.init(document.getElementById('main'));
+        var option = {
+            title: {
+                text: '基金top10'
+            },
+            tooltip: {},
+            legend: {
+                data:['市值']
+            },
+            xAxis: {
+                data: ["贵州茅台","工商银行","建设银行","招商银行","中国平安",
+                        "农业银行","中国人寿","中国银行","中国石油","中国中免"]
+            },
+            yAxis: {},
+            series: [{
+                name: '市值',
+                type: 'bar',
+                color: 'blue',
+                data: [27.52329379800, 18.53312536863, 17.02574756680, 14.29965245577, 12.87111797678,
+                      11.72443163475,10.05092909800,9.21433786584,8.63859015301,6.19676688155]
+            }]
+        };
+        myChart.setOption(option);
+    </script>
+
+      </div>
+    </section><!-- End Counts Section -->
+
+  <!-- ======= Footer ======= -->
+   <footer id="footer">
+    <div class="container">
+      <div class="copyright">
+        &copy; 版权 <strong><span>雪球基金</span></strong>.保留所有权利
+      </div>
+      <div class="credits">
+        设计于<a href="/designer" target="_blank">111宿舍</a>
+      </div>
+    </div>
+  </footer><!-- End Footer -->
+
+  <a href="#" class="back-to-top"><i class="icofont-simple-up"></i></a>
+
+  <!-- Vendor JS Files -->
+  <script src="static/assets/vendor/jquery/jquery.min.js"></script>
+  <script src="static/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="static/assets/vendor/jquery.easing/jquery.easing.min.js"></script>
+  <script src="static/assets/vendor/php-email-form/validate.js"></script>
+  <script src="static/assets/vendor/jquery-sticky/jquery.sticky.js"></script>
+  <script src="static/assets/vendor/venobox/venobox.min.js"></script>
+  <script src="static/assets/vendor/waypoints/jquery.waypoints.min.js"></script>
+  <script src="static/assets/vendor/counterup/counterup.min.js"></script>
+  <script src="static/assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+  <script src="static/assets/vendor/aos/aos.js"></script>
+
+  <!-- Template Main JS File -->
+  <script src="static/assets/js/main.js"></script>
+
+</body>
+
+</html>

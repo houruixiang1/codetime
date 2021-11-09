@@ -1,0 +1,105 @@
+body{
+    margin: 0;
+    background: #333;
+    /*background: url(bg.jpg) no-repeat 0px 0px;*/
+}
+#title{
+    position: absolute;
+    width: 40%;
+    height: 10%;
+    top: 0;
+    left: 30%;
+    background: #444444;
+    color: white;
+    font-size:44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+#tim{
+    position: absolute;
+    /*width: 30%;*/
+    height: 10%;
+    top: 5%;
+    right: 2%;
+    /*background: green;*/
+    font-size: 20px;
+    color: white;
+}
+
+#back{
+    position: absolute;
+    /*width: 30%;*/
+    height: 10%;
+    top: 5%;
+    left: 2%;
+    /*background: green;*/
+    font-size: 20px;
+    color: pink;
+}
+#c1{
+    position: absolute;
+    width: 40%;
+    height: 30%;
+    top: 10%;
+    left: 30%;
+    background: #12e78c;
+}
+.num{
+    width: 25%;
+    float: left;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: gold;
+    font-size: 15px;
+}
+.txt{
+    width: 25%;
+    float: left;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 15px;
+}
+#c2{
+    position: absolute;
+    width: 40%;
+    height: 60%;
+    bottom: 0;
+    left: 30%;
+    background: #d223e7;
+}
+#l1{
+    position: absolute;
+    width: 30%;
+    height: 45%;
+    top: 10%;
+    left: 0%;
+    background: #fe8104;
+}
+#l2{
+    position: absolute;
+    width: 30%;
+    height: 45%;
+    bottom: 0;
+    left: 0%;
+    background: #87CEEB;
+}
+#r1{
+    position: absolute;
+    width: 30%;
+    height: 45%;
+    top: 10%;
+    right: 0;
+    background: #87CEFA;
+}
+#r2{
+    position: absolute;
+    width: 30%;
+    height: 45%;
+    bottom: 0;
+    right: 0%;
+    background: #87CEEB;
+}

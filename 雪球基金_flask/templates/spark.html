@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.0.2/dist/echarts.js"></script>
+    <script src="https://cdn.bootcss.com/jquery/3.4.0/jquery.min.js"></script>
+    <title>Document</title>
+</head>
+<body>
+    <div id="main" style="width: 600px;height:600px;"></div>
+
+    <script type="text/javascript">
+    var myChart = echarts.init(document.getElementById("main"));
+    
+    myChart.showLoading();
+    var option;
+    option = {
+    series: [{
+        type: 'gauge',
+        axisLine: {
+            lineStyle: {
+                width: 30,
+                color: [
+                    [0.3, '#67e0e3'],
+                    [0.7, '#37a2da'],
+                    [1, '#fd666d']
+                ]
+            }
+        },
+        pointer: {
+            itemStyle: {
+                color: 'auto'
+            }
+        },
+        axisTick: {
+            distance: -30,
+            length: 8,
+            lineStyle: {
+                color: '#fff',
+                width: 2
+            }
+        },
+        splitLine: {
+            distance: -30,
+            length: 30,
+            lineStyle: {
+                color: '#fff',
+                width: 4
+            }
+        },
+        axisLabel: {
+            color: 'auto',
+            distance: 40,
+            fontSize: 20
+        },
+        detail: {
+            valueAnimation: true,
+            formatter: '速度{value} km/h',
+            color: 'auto'
+        },
+        data: [{
+            value: 70
+        }]
+    }]
+};
+
+<!--setInterval(function () {-->
+<!--    option.series[0].data[0].value = (Math.random() * 100).toFixed(2) - 0;-->
+<!--    myChart.setOption(option, true);-->
+<!--}, 2000);-->
+
+    // 异步加载数据
+    $.get('http://127.0.0.1:5000/rck/bar',{data:1},"json").done(function (data) {    
+        // 填入数据
+        myChart.setOption({
+            xAxis: {
+                data: data.categories
+            },
+            series: [{
+                name: '销量',
+                data: data.data
+            }]
+        });
+        myChart.hideLoading();
+    });
+
+    myChart.setOption(option);
+    window.addEventListener("resize", function () {
+            myChart.resize();
+        });
+    </script>
+    
+</body>
+</html>

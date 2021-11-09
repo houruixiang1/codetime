@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>中国基金分布</title>
+    <script src="../static/js/jquery.min.js"></script>
+    <link href="../static/css/main.css" rel="stylesheet"/>
+     <script src="https://cdn.jsdelivr.net/npm/echarts@^4.4.0/dist/echarts.min.js"></script>
+    <script src="https://gallerybox.makeapie.com/dep/echarts/map/js/china.js"></script>
+    <style>
+
+    </style>
+</head>
+<body>
+     <div id="title">2020年中国汽车销售分布</div>
+     <div id="tim">我是时间</div>
+     <div id="l1">我是左1</div>
+     <div id="l2">我是左2</div>
+     <div id="c1">
+         <div class="num"><h1>218万</h1></div>
+         <div class="num"><h1>280万</h1></div>
+         <div class="num"><h1>113万</h1></div>
+         <div class="num"><h1>80万</h1></div>
+
+         <div class="txt"><h1>一线城市</h1></div>
+         <div class="txt"><h1>二线城市</h1></div>
+         <div class="txt"><h1>三线城市</h1></div>
+         <div class="txt"><h1>其他城市</h1></div>
+
+     </div>
+     <div id="c2">我是中2</div>
+
+     <div id="r1">我是右1</div>
+     <img id="r2" src="../static/assets/img/汽车销售树.jpg">
+     <script src="../static/js/ec_center.js"></script>
+     <script src="../static/js/ec_left_1.js"></script>
+     <script src="../static/js/ec_left_2.js"></script>
+     <script src="../static/js/ec_right_1.js"></script>
+<!--     <script src="../static/js/ec_right_2.js"></script>-->
+
+
+<script>
+       function gettime(){
+           $.ajax({
+               url:"/time",
+               timeout:10000,
+               success:function(data){
+                   $("#tim").html(data)
+               },
+               error:function(xhr,type,errorThrown){
+
+               }
+           });
+       }
+       setInterval(gettime,1000)
+
+
+       function getdata(){
+           $.ajax({
+               url:"/",
+               success:function(data){
+                   $(".num h1").eq(0).text(data.usernum)
+                   $(".num h1").eq(1).text(data.fundnum)
+                   $(".num h1").eq(2).text(data.scale)
+               },
+               error:function(xhr,type,errorThrown){
+
+               }
+           });
+       }
+       setInterval(getdata,1000)
+</script>
+
+</body>
+</html>
