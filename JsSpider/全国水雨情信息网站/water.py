@@ -21,7 +21,7 @@ stnm_list = []
 wrz_list = []
 for i in rexp['result']['data']:
     data = i
-    print(data)
+    # print(data)
     dateTime = re.findall("'dateTime': '(.*?)'", str(data), re.S)[0]
     dateTime_list.append(dateTime)
 
