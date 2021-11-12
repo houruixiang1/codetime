@@ -1,3 +1,4 @@
+# 主要注意headers里边的accept_encoding，
 import requests
 url='https://www.zhihu.com/api/v4/search_v3?t=general&q=123&correction=1&offset=0&limit=20&filter_fields=&lc_idx=0&show_all_topics=0&search_source=Normal'
 headers = {
