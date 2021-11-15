@@ -1,5 +1,7 @@
 import time
 
+import pymysql
+
 print(
     '''
  排序  sort   最近热播：18，最新上架：19，高分好评：21，知乎高分：22
@@ -26,20 +28,6 @@ def requests_page(characteristic,charge,iarea,itype,sort,year,page):
         'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36'
     }
     url = 'https://v.qq.com/x/bu/pagesheet/list?_all=1&append=1&channel=movie&characteristic={}&charge={}&iarea={}&itype={}&listpage=2&offset={}&pagesize=30&sort={}&year={}'.format(characteristic, charge, iarea, itype, page, sort, year)
-    # data = {
-    #     '_all': 1,
-    #     'append': 1,
-    #     'channel': 'movie',
-    #     'characteristic': characteristic,
-    #     'charge': charge,
-    #     'iarea': iarea,
-    #     'itype': itype,
-    #     'listpage': 2,
-    #     'offset': 30,
-    #     'pagesize': 30,
-    #     'sort': sort,
-    #     'year': year
-    # }
     resp = requests.get(url,headers=headers)
     resp.encoding='utf-8'
     # print(resp.text)
@@ -100,29 +88,60 @@ def save_csv(list_data):
         writer = csv.writer(csvfile)
         for row in list_data:
             writer.writerow(row)
-        print("所有的文件都已写入完毕！")
         csvfile.close()
+
+def save_mysql(list_data):
+    for row in list_data:
+        host = 'localhost'
+        user = 'root'
+        password = '123456'
+        db = 'Codetime'
+        port = 3306
+        sql = '''
+        insert into tencent_movie_info(title,text_link,pic_link,time_length,score,desc_info,play_count) values ('%s','%s','%s','%s','%s','%s','%s')
+        '''%(row)
+        sql1 = '''
+        select * from tencent_movie_info
+        '''
+        # import pymysql
+        # li = [[4, '赵六', '物理', 97], [5, '孙七', '化学', 91], [6, '王八', '生物', 93]]
+        try:
+            con = pymysql.connect(host=host,user=user,db=db,port=port,password=password)
+            cur = con.cursor()
+            cur.execute(sql)
+            # cur.execute(sql1)
+            # a = cur.fetchall()
+            # print(a)
+            con.commit()
+            print('数据插入成功！')
+        except pymysql.Error as e:
+            print('数据插入失败：' + str(e))
+            con.rollback()
+        con.close()
+
+
 if __name__ == '__main__':
-    # lists = ['characteristic','charge','iarea','itype','sort','year']
-    # for list in lists:
     characteristic = input("输入特色：")
     charge = input("输入资费：")
     iarea = input("输入地区：")
     itype = input("输入类型：")
     sort = input("输入排序：")
     year = input("输入年份：")
-    # page = 30
+    page = 30
     print("输入页数(默认前120)")
     time.sleep(2)
     i = 0
     while(1):
-        if i==3000:
+        if 5000<i<=5031:
             break
         page = i
         i = i+30
         print(page)
         resp= requests_page(characteristic,charge,iarea,itype,sort,year,page)
         list_data = parse(resp)
-        save_csv(list_data)
+        # save_csv(list_data)
+        save_mysql(list_data)
+    print("所有的文件都已保存完毕！")
+
 
 
