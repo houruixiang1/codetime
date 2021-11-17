@@ -1,5 +1,5 @@
 import time
-from chaojiying import Chaojiying_Client
+from JsSpider.超级鹰_验证码识别.chaojiying import Chaojiying_Client
 
 from selenium.webdriver import Chrome
 
