@@ -1,6 +1,7 @@
 import time
 import execjs
 import requests
+#画布加密（未解决，这个牵扯到验证码识别方面，截图确实可以拿到，但不全，相当于失败，代表网站飞书文档，后端加密数据肯看见，js代码未抠出来）
 url= 'https://bytedance.feishu.cn/docs/doccncnTH4IxoGvtUYfn1hzNFVc'
 node = execjs.get()
 ctc = node.compile(open(r'/js/feishu.js', mode='r', encoding='utf-8').read())
