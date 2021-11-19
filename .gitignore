@@ -25,5 +25,6 @@ test.txt
 tencent.csv
 
 #js
-
+*.csv
+*.xls
 #JsSpider/login/js
