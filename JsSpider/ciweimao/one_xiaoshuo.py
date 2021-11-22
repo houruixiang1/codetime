@@ -59,18 +59,10 @@ def get_content_and_key(vid):
     # print(encryt_keys)
     return chapter_access_key,chapter_content,encryt_keys
 
-def main():
-    node = execjs.get()
-    with open(r"C:\CodeTime\js\test.js",encoding='utf-8') as f:
-        info = f.read()
-    # print('123454566',info)
-    # js = '''
-    #    const CryptoJS = require('crypto-js');
-    # '''
-    # js = js + info
-    # print(js)
-    # ctc = node.compile(info,cwd=r'C:\CodeTime\node_modules')
-    ctc = node.compile(info)
+def main(accesskey,content,key):
+    with open(r'C:\CodeTime\js\ceweimao.js',mode='r',encoding='utf-8')as f:
+        js = f.read()
+    ctc = execjs.compile(js,cwd=r'C:\clip-spider-v2\node_modules')
     funcName = 'get_data()'
     # funcName = 'get_data("{0}","{1}","{2}")'.format(accesskey,content,key)
     data = ctc.eval(funcName)
@@ -86,6 +78,6 @@ if __name__ == '__main__':
     accesskey = get_content_and_key(vid)[0]
     content = get_content_and_key(vid)[1]
     key = get_content_and_key(vid)[2]
-    # print(accesskey,content,key)
-    real_data = main()
+    print(accesskey,content,key)
+    real_data = main(accesskey,content,key)
     print(real_data)
