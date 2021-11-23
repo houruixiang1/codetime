@@ -6,7 +6,7 @@ import csv
 headers = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.82 Safari/537.36',
 }
-f =open("data.csv", mode='w',newline="", encoding="utf-8")
+f =open(r"C:\CodeTime\csv\新发地菜价.csv", mode='w',newline="", encoding="utf-8")
 csvwrites = csv.writer(f)
 
 def Page_one_data(url):
@@ -39,4 +39,4 @@ if __name__ == '__main__':
     with ThreadPoolExecutor(50) as t:
         for i in range(1,201):
             t.submit(Page_one_data,'http://www.xinfadi.com.cn/getPriceData.html')
-        print("下载完毕！！！！")
+    print("下载完毕！！！！")

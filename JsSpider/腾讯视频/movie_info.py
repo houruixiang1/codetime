@@ -84,7 +84,7 @@ def save_csv(list_data):
     # file =open('腾讯视频电影分类信息.csv',mode='a',encoding='utf-8',newline='')
     # csv_write = csv.DictWriter(file,fieldnames=['title','text_link','pic_link','time_length','score','desc','play_count'])
     # csv_write.writeheader()
-    with open(r'C:\CodeTime\JsSpider\腾讯视频\tencent.csv', 'a', newline='',encoding='utf-8') as csvfile:
+    with open(r'C:\CodeTime\csv\tencent.csv', 'a', newline='',encoding='utf-8') as csvfile:
         writer = csv.writer(csvfile)
         for row in list_data:
             writer.writerow(row)
@@ -139,8 +139,8 @@ if __name__ == '__main__':
         print(page)
         resp= requests_page(characteristic,charge,iarea,itype,sort,year,page)
         list_data = parse(resp)
-        # save_csv(list_data)
-        save_mysql(list_data)
+        save_csv(list_data)
+        # save_mysql(list_data)
     print("所有的文件都已保存完毕！")
 
 
