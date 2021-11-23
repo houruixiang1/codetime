@@ -29,3 +29,5 @@ tencent.csv
 *.xls
 #JsSpider/login/js
 *.img
+*.png
+img
