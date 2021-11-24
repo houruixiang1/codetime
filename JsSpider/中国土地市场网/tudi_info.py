@@ -39,6 +39,11 @@ def handel(data):
     # proxie = {'http': '180.119.83.230:9999'}
     resp = requests.post(url=url,headers=headers,json=data).json()
     return resp
+
+file = open('C:\CodeTime\csv\中国土地市场网供地结果.csv', mode='a', encoding='utf-8', newline='')
+csv_write = csv.DictWriter(file,fieldnames=["gdGuid", "xzqDm","tdZl","gyFs","gyMj","tdYt","qdRq","xzqFullName"])
+csv_write.writeheader()
+
 def parse(data,i):
     resp = handel(data)
     # print('hello',resp)
@@ -60,14 +65,11 @@ def parse(data,i):
             dict = {
                 "gdGuid":gdGuid, "xzqDm":xzqDm,"tdZl":tdZl,"gyFs":gyFs,"gyMj":gyMj,"tdYt":tdYt,"qdRq":qdRq,"xzqFullName":xzqFullName
             }
-            # file = open('C:\CodeTime\csv\中国土地市场网供地结果.csv', mode='a', encoding='utf-8', newline='')
-            # csv_write = csv.DictWriter(file,fieldnames=["gdGuid", "xzqDm","tdZl","gyFs","gyMj","tdYt","qdRq","xzqFullName"])
-            # csv_write.writeheader()
-            # csv_write.writerow(dict)
+            csv_write.writerow(dict)
             # print("第i页" % i,dict)
         print('第%d页数据存入完毕！！！' % i,dict)
 def page_handel():
-    for i in range(1,100):
+    for i in range(1,601):
         data = {
             'endDate': "",
             'pageNum': i,
@@ -78,7 +80,7 @@ def page_handel():
 page_handel()
 # resp = handel(1)
 # print(resp)
-pool = ThreadPoolExecutor(max_workers=4)
+pool = ThreadPoolExecutor(max_workers=2)
 while queue_list.qsize() > 0:
     pool.submit(parse,queue_list.get('data'),queue_list.get('i'))
     # print(queue_list.get("i"))
