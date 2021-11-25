@@ -1,8 +1,9 @@
 import re
+from multiprocessing import Queue
 
 import requests
 from lxml import etree
-
+queue = Queue()
 class book(object):
     def __init__(self):
         self.start_url = 'https://www.4yt.net/top/'
@@ -53,6 +54,7 @@ class book(object):
         for i,zhangjie in enumerate(zhangjie_list_xpath):
             if(i<=19):
                 zhangjie_name = zhangjie.xpath('./span/text()')
+                zhangjie_name = zhangjie_name[0].strip()
                 zhangjie_url = zhangjie.xpath('./@href')
                 # print(zhangjie_name,zhangjie_url)
                 zhangjie_list.append({"zhangjie_name":zhangjie_name,"zhangjie_url":zhangjie_url})
@@ -62,60 +64,41 @@ class book(object):
         return zhangjie_list
 
     def handel_detail_zhangjie(self,urls):
-        xiaoshuo_data = []
-        # i_list = []
-        # for name in names:
-        #     print(name[0].replace('[','').replace(']','').replace("'","").strip())
-        for i,url in enumerate(urls):
-            # i_list.append(i)
+        # xiaoshuo_name = str(name).replace('[','').replace(']','').replace("'","").strip()
+        # print("开始保存小说[%s]前20章！！！" % xiaoshuo_name)
+        # xiaoshuo_datas = []
+        for url in urls:
             real_xiaoshuo_zhangjie_url = 'https://www.4yt.net' + url
-            resp = self.handel_requests(real_xiaoshuo_zhangjie_url)
-            html = etree.HTML(resp)
-            zhangjie_list_xpath = html.xpath('/html/body/div[2]/div/div[3]/p/text()')
-
-            xiaoshuo_data.append(zhangjie_list_xpath)
-            print("已存入%s章" % i)
-        # for i in i_list:
-        real_data = str(xiaoshuo_data).replace('[','').replace(']','').replace("'","").replace('本书首发来自','').replace('，第一时间看正版内容！','').strip()
-        with open(r'C:\CodeTime\txt' + str(i)+'.txt', mode='a', encoding='utf-8')as f:
-            f.write(real_data)
-        # print(str(xiaoshuo_data))
-        # return xiaoshuo_data
+            print(real_xiaoshuo_zhangjie_url)
+            # resp = self.handel_requests(real_xiaoshuo_zhangjie_url)
+            # html = etree.HTML(resp)
+            # zhangjie_list_xpath = html.xpath('/html/body/div[2]/div/div[3]/p/text()')
+            # real_data = str(zhangjie_list_xpath).replace('[','').replace(']','').replace("'","").replace('本书首发来自','').replace('，第一时间看正版内容！','').strip()
+            # with open(r'C:\CodeTime\txt\\'+xiaoshuo_name+'.txt', mode='a', encoding='utf-8')as f:
+            #     f.write(real_data+'\r\n')
+                # f.write('\r\n')
+                # f.close()
+        # print("小说【%s】前20章保存完毕！！！" % xiaoshuo_name)
     def main(self):
         content = self.handel_requests(self.start_url)
-        # print(content)
         ranks = self.handel_rank(content)
-        # print(ranks)
-        name_list = []
-        url_list = []
         for i,rank in enumerate(ranks):
             # print(i)
             urls = rank['rank_url']
             for url in urls:
                 real_rank_url = 'https://www.4yt.net'+url
                 xiaoshuo_ranks = self.handel_detail_rank(real_rank_url)
-                # print(xiaoshuo_ranks)
-                for i, xiaoshuo_rank in enumerate(xiaoshuo_ranks):
-                    # print(i)
+                for xiaoshuo_rank in xiaoshuo_ranks:
                     urls = xiaoshuo_rank['rank_url']
                     names = xiaoshuo_rank['rank_name']
-                    # print(names)
-                    name_list.append(names)
+                    queue.put(names)
                     for url in urls:
                         real_xiaoshuo_rank_url = 'https://www.4yt.net' + url
-                        # print(real_xiaoshuo_rank_url)
                         xiaoshuo_zhangjies = self.handel_zhangjies(real_xiaoshuo_rank_url)
-                        # print(xiaoshuo_zhangjies)
-                        for i, xiaoshuo_zhangjie in enumerate(xiaoshuo_zhangjies):
+                        for xiaoshuo_zhangjie in xiaoshuo_zhangjies:
                             urls = xiaoshuo_zhangjie['zhangjie_url']
-                            # url_list.append(urls)
-                            # names = xiaoshuo_zhangjie['zhangjie_name']
+                            # print(urls)
                             self.handel_detail_zhangjie(urls)
-                            # print(zhangjie_detail_text)
-        # print(name_list)
-
-
-
 if __name__ == '__main__':
     task = book()
     task.main()
