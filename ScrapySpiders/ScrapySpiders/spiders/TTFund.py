@@ -6,11 +6,15 @@ import re
 from ast import literal_eval
 from distutils.util import strtobool
 
+import pymysql
 import redis
 import requests
 import scrapy
 from scrapy.utils.project import get_project_settings
 from scrapy_redis.spiders import RedisSpider
+
+from ..database_tool import DBConnector
+from ..items import TTFundItem
 
 
 class TtfundSpider(RedisSpider):
@@ -20,20 +24,13 @@ class TtfundSpider(RedisSpider):
     redis_key = 'TTFund:start_urls'
 
 
-    def __init__(self,  node='master', uu_id='000000002021', schedule='False', *args, **kwargs):
+    def __init__(self,  node='master', uu_id='000000002021', operation="or", schedule='False', *args, **kwargs):
         super(TtfundSpider, self).__init__(*args, **kwargs)
         self.__task_id = uu_id
         # self.keywords = list(filter(None, keyword.split('|')))
-        # self.operation = operation
+        self.operation = operation
         self.redis_key = self.redis_key + "_" + uu_id
         self.node = node
-        file = open(r'C:\CodeTime\csv\自定义基金排行.csv', mode='a', encoding='utf-8', newline='')
-        csv_write = csv.DictWriter(file,fieldnames=['股票代码', '股票名称', '股票涨幅', '股票分红', '股票分红次数',
-                                                '股票开始日期', '股票单位净值1', '股票累计净值1','股票累计净值1',
-                                                '股票结束日期', '股票单位净值2', '股票累计净值2', '股票创建日期',
-                                                    '股票手续费'])
-        csv_write.writeheader()
-        self.csv_write = csv_write
         self.schedule = strtobool(schedule)
 
         if not os.path.exists('/data/'):
@@ -42,7 +39,8 @@ class TtfundSpider(RedisSpider):
         if node == 'master':
             settings = get_project_settings()
             r = redis.Redis(host=settings.get("REDIS_HOST"), port=settings.get("REDIS_PORT"), decode_responses=True)
-            for i in range(0,10):
+            page = int(self.page_num())
+            for i in range(0,page):
                 url = 'http://fund.eastmoney.com/data/rankhandler.aspx?op=dy&dt=kf&ft=all&rs=&gs=0&sc=qjzf&st=desc&sd=2020-11-22&ed=2021-11-22&es=0&qdii=&pi={}&pn=50&dx=0'.format(i)
                 request_data = {
                     'url': url,
@@ -52,12 +50,7 @@ class TtfundSpider(RedisSpider):
 
     def make_request_from_data(self, data):
         data = json.loads(data)  #字符串转换为字典
-        # print("hello",data)
         url = data.get('url')
-        # meta = data.get('meta')
-        # # print(meta['key_words'])
-        # # print(meta['page'])
-        # print("Fetch url:", url)
         logging.log(msg="Fetch url:"+url, level=logging.INFO)
         return scrapy.Request(url=url, method="GET",headers = {
                                 'Accept': '*/*',
@@ -84,35 +77,72 @@ class TtfundSpider(RedisSpider):
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36'
         }).text
         page_num = re.search('allPages:(.*?),',resp,re.S).group(1).strip()
-        return int(page_num)
+        return page_num
 
     def parse(self, response):
+
         resp = response.text
-        if '-999' in resp:
-            return None
         data = re.search('var rankData = .*?(\[.*?\])',resp,re.S).group(1).strip()
         lists = literal_eval(data)
-        data_dict = {}
         for list in lists:
             # print(list)
-            code = list.split(',')[0]
-            name = list.split(',')[1]
-            zhangfu = list.split(',')[3]
-            fenhong = list.split(',')[4]
-            fenhong_num = list.split(',')[5]
-            start_date = list.split(',')[6]
-            danweijingzhi1 = list.split(',')[7]
-            leijijingzhi1 = list.split(',')[8]
-            end_date = list.split(',')[9]
-            danweijingzhi2 = list.split(',')[10]
-            leijijingzhi2 = list.split(',')[11]
-            create_date = list.split(',')[12]
-            shouxufei = list.split(',')[14]
-            data_dict = {"股票代码": code,"股票名称": name,"股票涨幅": zhangfu,"股票分红": fenhong,"股票分红次数": fenhong_num,"股票开始日期": start_date,
-                         "股票单位净值1": danweijingzhi1,"股票累计净值1": leijijingzhi1,"股票结束日期": end_date,"股票单位净值2": danweijingzhi2,"股票累计净值2": leijijingzhi2,
-                         "股票创建日期": create_date, "股票手续费": shouxufei}
-            self.csv_write.writerow(data_dict)
-        print("所有的文件都已保存进入csv！！！")
+            item = TTFundItem()
+            item['uu_id'] = self.__task_id
+            if list.split(',')[0]:
+                item['code'] = list.split(',')[0]
+            else:
+                item['code'] = None
+            if list.split(',')[1]:
+                item['name'] = list.split(',')[1]
+            else:
+                item['name'] = None
+            if list.split(',')[3]:
+                item['zhangfu'] = list.split(',')[3]
+            else:
+                item['zhangfu'] = None
+            if list.split(',')[4]:
+                item['fenhong'] = list.split(',')[4]
+            else:
+                item['fenhong'] = None
+
+            if list.split(',')[5]:
+                item['fenhong_num'] = list.split(',')[5]
+            else:
+                item['fenhong_num'] = None
+            if list.split(',')[6]:
+                item['start_date'] = list.split(',')[6]
+            else:
+                item['start_date'] = None
+            if list.split(',')[7]:
+                item['danweijingzhi1'] = list.split(',')[7]
+            else:
+                item['danweijingzhi1'] = None
+            if list.split(',')[8]:
+                item['leijijingzhi1'] = list.split(',')[8]
+            else:
+                item['leijijingzhi1'] = None
+            if list.split(',')[9]:
+                item['end_date'] = list.split(',')[9]
+            else:
+                item['end_date'] = None
+            if list.split(',')[10]:
+                item['danweijingzhi2'] = list.split(',')[10]
+            else:
+                item['danweijingzhi2'] = None
+            if list.split(',')[11]:
+                item['leijijingzhi2'] = list.split(',')[11]
+            else:
+                item['leijijingzhi2'] = None
+            if list.split(',')[12]:
+                item['create_date'] = list.split(',')[12]
+            else:
+                item['create_date'] = None
+            if list.split(',')[14]:
+                item['shouxufei'] = list.split(',')[14]
+            else:
+                item['shouxufei'] = None
+            yield item
+
 
 
 

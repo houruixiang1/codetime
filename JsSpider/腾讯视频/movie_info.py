@@ -95,7 +95,7 @@ def save_mysql(list_data):
         host = 'localhost'
         user = 'root'
         password = '123456'
-        db = 'Codetime'
+        db = 'codetime'
         port = 3306
         sql = '''
         insert into tencent_movie_info(title,text_link,pic_link,time_length,score,desc_info,play_count) values ('%s','%s','%s','%s','%s','%s','%s')
