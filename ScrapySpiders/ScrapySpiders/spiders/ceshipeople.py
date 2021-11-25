@@ -26,7 +26,7 @@ class CeshipeopleSpider(RedisSpider):
     # handle_httpstatus_list = [418]  # http status code for not ignoring
     redis_key = 'ceshipeople:start_urls'
 
-    def __init__(self, keyword, node='master', uu_id='000000002021', operation="or", crawl_image='True', crawl_video='True', important_user='False', schedule='False', *args, **kwargs):
+    def __init__(self, keyword, node='master', uu_id='000000002021', operation="or", crawl_image='True', crawl_video='False', important_user='False', schedule='False', *args, **kwargs):
         super(CeshipeopleSpider, self).__init__(*args, **kwargs)
         self.__task_id = uu_id
         self.keywords = list(filter(None, keyword.split('|')))
@@ -47,22 +47,20 @@ class CeshipeopleSpider(RedisSpider):
         if node == 'master':
             settings = get_project_settings()
             r = redis.Redis(host=settings.get("REDIS_HOST"), port=settings.get("REDIS_PORT"), decode_responses=True)
-            url ='http://search.people.cn/api-search/front/search'
-            print("hello99",self.parse_page_num())
-            page = self.parse_page_num()
-            # for i in range(1, self.parse_page_num()):
-            for j in self.js:
-                for i in range(5):
-                    page_num = page
-                    if page_num > 1:
-                        break
-                self.page_num = min(page_num, 10)
-                print("hello98",self.page_num)
-                for i in range(1, self.page_num):
+            url ='http://search.people.cn/search-platform/front/search'
+            # print("hello99",self.parse_page_num())
+            pages = self.parse_page_num()
+            # print(pages)
+            # for page in pages:
+            for i,j in enumerate(self.js):
+                page = pages[i]
+                # print(page)
+                page_num = min(page,10)
+                for x in range(1, page_num):
                     request_data = {
                         'url': url,
                         'meta': {'key_words': self.keywords,
-                                 'page':i,
+                                 'page':x,
                                  'type':j
                                  }
                     }
@@ -74,41 +72,59 @@ class CeshipeopleSpider(RedisSpider):
         # print(data)
         url = data.get('url')
         meta = data.get('meta')
-        # print(meta['key_words'])
-        # print(meta['page'])
-        # print("Fetch url:", url)
         for kw in self.keywords:
-            logging.log(msg="Fetch url:"+url, level=logging.INFO)
-            return scrapy.Request(url=url, method="POST",headers = {
+            # logging.log(msg="Fetch url:"+url, level=logging.INFO)
+            return scrapy.Request(url=url, method="POST",headers={
                                     "content-type": "application/json; charset=UTF-8",
-                                  "cookie": "__jsluid_h=1026ed126ad0512598a15b39b731e31a; sso_c=0; sfr=1",
-                                  "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.63 Safari/537.36"
-                                  },
-                              body=json.dumps({
-                                  "key": kw, "page":meta['page'] , "limit": 10, "hasTitle": "true", "hasContent": "true",
-                                  "isFuzzy": "true", "type":meta['type'], "sortType": 2, "startTime": 0, "endTime": 0
-                              }),
-                              callback=self.parse, meta=meta, dont_filter=True)
+                                    "cookie": "Cookie: __jsluid_h=b8062478ebf28d0e7fc3028db63168cb; sso_c=0; sfr=1; wdcid=1ad2449c65c9061e",
+                                    "Referer": "http://search.people.cn/s/?",
+                                    "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.63 Safari/537.36"
+                                },body=json.dumps({
+                                    'endTime': 0,
+                                    'hasContent': 'true',
+                                    'hasTitle': 'true',
+                                    'isFuzzy': 'true',
+                                    'key': kw,
+                                    'limit': 10,
+                                    'page': meta["page"],
+                                    'sortType': 2,
+                                    'startTime': 0,
+                                    'type': meta["type"],
+                                }),callback=self.parse, meta=meta, dont_filter=True)
 
     def parse_page_num(self):
+        page_list = []
         for j in self.js:
             for kw in self.keywords:
-                content = requests.post(url='http://search.people.cn/api-search/front/search',
+                try:
+                    content = requests.post(url='http://search.people.cn/search-platform/front/search',
                                 headers={
                                     "content-type": "application/json; charset=UTF-8",
-                                    "cookie": "__jsluid_h=1026ed126ad0512598a15b39b731e31a; sso_c=0; sfr=1",
+                                    "cookie": "Cookie: __jsluid_h=b8062478ebf28d0e7fc3028db63168cb; sso_c=0; sfr=1; wdcid=1ad2449c65c9061e",
+                                    "Referer": "http://search.people.cn/s/?",
                                     "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.63 Safari/537.36"
                                 },
-                                data=json.dumps({
-                                    "key": kw, "page": 1, "limit": 10, "hasTitle": "true",
-                                    "hasContent": "true",
-                                    "isFuzzy": "true", "type": j, "sortType": 2, "startTime": 0, "endTime": 0
-                                })).text
-                content_dict = json.loads(content)
-                # print(content_dict)
-                post_count = content_dict['data']['total']
+                                json={
+                                    'endTime': 0,
+                                    'hasContent': 'true',
+                                    'hasTitle': 'true',
+                                    'isFuzzy': 'true',
+                                    'key': kw,
+                                    'limit': 10,
+                                    'page': 1,
+                                    'sortType': 2,
+                                    'startTime': 0,
+                                    'type': j,
+                                }).text
+                    # print(content)
+                    content_dict = json.loads(content)
+                    # print(content_dict)
+                    post_count = content_dict['data']['total']
+                    page_list.append(post_count)
+                except:
+                    return "出错！！"
                 # print("hello",content_dict)
-                return post_count
+        return page_list
 
     def parse(self,response):
         value=response.meta['type']
