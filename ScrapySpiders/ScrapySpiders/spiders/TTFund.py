@@ -40,7 +40,7 @@ class TtfundSpider(RedisSpider):
             settings = get_project_settings()
             r = redis.Redis(host=settings.get("REDIS_HOST"), port=settings.get("REDIS_PORT"), decode_responses=True)
             page = int(self.page_num())
-            for i in range(0,page):
+            for i in range(1,page+1):
                 url = 'http://fund.eastmoney.com/data/rankhandler.aspx?op=dy&dt=kf&ft=all&rs=&gs=0&sc=qjzf&st=desc&sd=2020-11-22&ed=2021-11-22&es=0&qdii=&pi={}&pn=50&dx=0'.format(i)
                 request_data = {
                     'url': url,

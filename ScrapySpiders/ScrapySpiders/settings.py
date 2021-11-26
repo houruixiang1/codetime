@@ -115,7 +115,7 @@ ITEM_PIPELINES = {
 PROXY_API = 'count=0'
 
 MYEXT_ENABLED = True  # 开启扩展
-IDLE_NUMBER = 20  # 配置空闲持续时间单位为 360个 ，一个时间单位为5s
+IDLE_NUMBER = 25  # 配置空闲持续时间单位为 360个 ，一个时间单位为5s
 
 # 在 EXTENSIONS 配置，激活扩展
 EXTENSIONS = {
