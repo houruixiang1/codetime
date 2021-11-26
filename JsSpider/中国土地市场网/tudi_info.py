@@ -1,7 +1,6 @@
 import csv
 from concurrent.futures import ThreadPoolExecutor
 from multiprocessing import Queue
-from JsSpider.proiex.proiex import get_pro
 import requests
 queue_list = Queue()
 # file =open('C:\CodeTime\csv\中国土地市场网供地结果.csv',mode='a',encoding='utf-8',newline='')
