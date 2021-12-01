@@ -10,7 +10,14 @@ from JsSpider.proiex.test_proiex import Proxy_pool
 # headers = {
 #     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.121 Safari/537.36'
 # }
-
+'''
+    github大佬仓库：https://github.com/srx-2000/spider_collection
+    代理大佬仓库：https://github.com/jhao104/proxy_pool
+    运行代理：python proxyPool.py server
+    *特别注意端口的正确*
+    *尤其注意下边存入txt文件时，路径的正确*
+    
+'''
 
 class zhihu_answer():
     question_id = 0
@@ -118,7 +125,7 @@ class zhihu_answer():
             question_id=str(question_id), limit=20)
         response = self.proxy_pool.get_response(url, headers=self.headers)
         json_result = json.loads(response.content)
-        print(json_result)
+        # print(json_result)
         data = json_result["data"]
         title = data[0]['question']['title']
         return title
@@ -134,7 +141,8 @@ class zhihu_answer():
         # self.get_answer(question_id)
         text_list = self.format_content(result_dict['content_list'])
         try:
-            with open(os.path.dirname(os.getcwd()) + question_title + ".txt", mode="w", encoding='utf-8') as f:
+            print("爬取正常！！！")
+            with open(os.path.dirname(os.getcwd()) + '\\result\\' + question_title + ".txt", mode="w", encoding='utf-8') as f:
                 f.write("问题：" + question_title + "\n")
                 f.write("问题id：" + str(question_id) + "\n\n")
                 for i in range(0, len(text_list)):
@@ -144,6 +152,7 @@ class zhihu_answer():
                     f.write("回答的内容：" + text_list[i] + "\n\n")
             f.close()
         except:
+            print("爬取异常！！！")
             pass
         finally:
             print("爬取完成")
