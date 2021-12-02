@@ -91,6 +91,7 @@ SCHEDULER_DUPEFILTER_KEY = '00001:dupefilter'
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
    'ScrapySpiders.pipelines.ScrapyspidersPipeline': 300,
+   # 'ScrapySpiders.pipelines.TTFundPipeline': 300
 }
 # # 文件下载存储配置
 # FILES_STORE = 'd:\\cache'

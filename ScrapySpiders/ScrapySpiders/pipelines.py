@@ -15,6 +15,9 @@ from scrapy.exceptions import DropItem
 from pymongo.errors import DuplicateKeyError
 
 class ScrapyspidersPipeline(object):
+    pass
+
+class TTFundPipeline(object):
     def __init__(self):
         # python3保存文件 必须需要'wb'  保存为json格式
         self.f = open("itcast_pipeline.json", 'wb')
