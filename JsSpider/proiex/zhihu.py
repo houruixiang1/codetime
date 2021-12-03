@@ -1,15 +1,22 @@
-import requests
 import json
 import re
+import sys
 import threading
 import time
 import os
 
-from JsSpider.proiex.test_proiex import Proxy_pool
+from service.utils_proiex import Proxy_pool
+
+DIR_BASE = os.path.dirname(os.path.abspath(__file__)) + '/../..'
+os.chdir(DIR_BASE)
+sys.path.append(DIR_BASE)
+
 
 # headers = {
 #     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.121 Safari/537.36'
 # }
+
+
 '''
     github大佬仓库：https://github.com/srx-2000/spider_collection
     代理大佬仓库：https://github.com/jhao104/proxy_pool
