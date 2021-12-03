@@ -11,11 +11,12 @@ class Proxy_pool():
 
     # 默认本机ip，端口是上述项目的默认端口。
     host="127.0.0.1"
-    port="5000"
+    port="5010"
 
     # 初始化用过yaml文件读取配置
     def __init__(self):
-        config=open(os.getcwd()+"\\config.yaml",mode="r",encoding="utf-8")
+        print(os.getcwd())
+        config=open(os.getcwd()+ "\\service\\" + "\\config.yaml",mode="r",encoding="utf-8")
         cfg=config.read()
         yaml_line=yaml.load(stream=cfg,Loader=yaml.FullLoader)
         self.host=yaml_line["host"]

@@ -149,7 +149,7 @@ class zhihu_answer():
         text_list = self.format_content(result_dict['content_list'])
         try:
             print("爬取正常！！！")
-            with open(os.path.dirname(os.getcwd()) + '\\result\\' + question_title + ".txt", mode="w", encoding='utf-8') as f:
+            with open(os.getcwd() + '\\result\\' + question_title + ".txt", mode="w", encoding='utf-8') as f:
                 f.write("问题：" + question_title + "\n")
                 f.write("问题id：" + str(question_id) + "\n\n")
                 for i in range(0, len(text_list)):
