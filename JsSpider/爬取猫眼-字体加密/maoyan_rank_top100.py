@@ -1,7 +1,7 @@
 import json
 import os
 import sys
-
+from pymongo import MongoClient
 from service.utils_proiex import Proxy_pool
 import requests
 from requests import RequestException
@@ -17,8 +17,9 @@ class maoyan_rank_top100():
     def __init__(self):
         self.proxy_pool = Proxy_pool()
         self.headers = {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.45 Safari/537.36'
-    }
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.45 Safari/537.36'
+            }
+        self.Client = MongoClient()
 
     def crawl_one_page(self,url):
         try:
@@ -55,6 +56,15 @@ class maoyan_rank_top100():
             with open(r'./maoyan_top100.txt',mode='a',encoding='utf-8')as f:
                 f.write(json.dumps(data, ensure_ascii=False) + '\n')
 
+    def write_in_mongo(self, data_list):
+        # print(data_list)
+        db = self.Client.maoyan_ranktop100
+        collection = db["maoyan_movie_top100"]
+        for data in data_list:
+            # print(data)
+            datas = json.loads(data, ensure_ascii=False)
+            collection.insert(datas)
+
 
 if __name__ == '__main__':
     rank_top100 = maoyan_rank_top100()
@@ -64,5 +74,7 @@ if __name__ == '__main__':
         print("正在爬取{}".format(url))
         content = rank_top100.crawl_one_page(url)
         list_data = rank_top100.parse(content)
-        rank_top100.write_in_file(list_data)
+        # print(list_data)
+        # rank_top100.write_in_file(list_data)
+        rank_top100.write_in_mongo(list_data)
         print("已爬取完{}".format(url))
