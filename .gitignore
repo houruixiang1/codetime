@@ -27,6 +27,7 @@ tencent.csv
 #js
 *.csv
 *.xls
+*.txt
 #JsSpider/login/js
 *.img
 *.png
