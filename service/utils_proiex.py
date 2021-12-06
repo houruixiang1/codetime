@@ -15,8 +15,8 @@ class Proxy_pool():
 
     # 初始化用过yaml文件读取配置
     def __init__(self):
-        print(os.getcwd())
-        config=open(os.getcwd()+ "\\service\\" + "\\config.yaml",mode="r",encoding="utf-8")
+        # print(os.getcwd())
+        config=open(r"C:\CodeTime\service\config.yaml",mode="r",encoding="utf-8")
         cfg=config.read()
         yaml_line=yaml.load(stream=cfg,Loader=yaml.FullLoader)
         self.host=yaml_line["host"]
