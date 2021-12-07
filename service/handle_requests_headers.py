@@ -1,6 +1,5 @@
 import re
 
-import pandas as pd
 
 with open(r'C:\CodeTime\service\请求头文件.txt',mode='r',encoding='utf-8')as f:
     strs = f.readlines()
