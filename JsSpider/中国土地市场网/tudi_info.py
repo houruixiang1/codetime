@@ -39,7 +39,7 @@ def handel(data):
     resp = requests.post(url=url,headers=headers,json=data).json()
     return resp
 
-file = open('/csv/中国土地市场网供地结果.csv', mode='a', encoding='utf-8', newline='')
+file = open('C:/Codetime/csvfile/中国土地市场网供地结果.csv', mode='a', encoding='utf-8', newline='')
 csv_write = csv.DictWriter(file,fieldnames=["gdGuid", "xzqDm","tdZl","gyFs","gyMj","tdYt","qdRq","xzqFullName"])
 csv_write.writeheader()
 
