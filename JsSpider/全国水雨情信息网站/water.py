@@ -62,7 +62,7 @@ head = ['流域', '行政区', '河名', '站名', '时间', '水位(米)', '流
 list = [poiBsnm_list, poiAddv_list, rvnm_list, stnm_list, dateTime_list, zl_list, ql_list, wrz_list]  # 数据列表
 list_change = numpy.transpose(list)  # 数据行列互换
 test = pd.DataFrame(columns=head, data=list_change)
-test.to_csv(rf'C:\CodeTime\csv\全国水雨情信息网站.csv')
+test.to_csv(rf'C:\CodeTime\csvfile\全国水雨情信息网站.csv')
 
 # print(dateTime_list)
 
