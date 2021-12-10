@@ -2,9 +2,22 @@
 #
 # See documentation in:
 # https://docs.scrapy.org/en/latest/topics/spider-middleware.html
-
+import json
+from scrapy.core.downloader.handlers.http11 import TunnelError
+from twisted.internet import defer
+from twisted.internet.error import (
+    ConnectError,
+    ConnectionDone,
+    ConnectionLost,
+    ConnectionRefusedError,
+    DNSLookupError,
+    TCPTimedOutError,
+    TimeoutError,
+)
+from twisted.web.client import ResponseFailed
+import requests
 from scrapy import signals
-
+from scrapy.downloadermiddlewares.retry import RetryMiddleware
 # useful for handling different item types with a single interface
 from itemadapter import is_item, ItemAdapter
 
@@ -57,47 +70,25 @@ class JdSpiderMiddleware:
 
 
 class JdDownloaderMiddleware:
-    # Not all methods need to be defined. If a method is not defined,
-    # scrapy acts as if the downloader middleware does not modify the
-    # passed objects.
-
-    @classmethod
-    def from_crawler(cls, crawler):
-        # This method is used by Scrapy to create your spiders.
-        s = cls()
-        crawler.signals.connect(s.spider_opened, signal=signals.spider_opened)
-        return s
-
     def process_request(self, request, spider):
-        # Called for each request that goes through the downloader
-        # middleware.
-
-        # Must either:
-        # - return None: continue processing this request
-        # - or return a Response object
-        # - or return a Request object
-        # - or raise IgnoreRequest: process_exception() methods of
-        #   installed downloader middleware will be called
+        response = requests.get(url = 'http://127.0.0.1:5010/get/')
+        self.result = json.loads(response.text)
+        proxy = 'http://' + self.result['proxy']
+        request.meta['proxy'] = proxy
         return None
 
-    def process_response(self, request, response, spider):
-        # Called with the response returned from the downloader.
-
-        # Must either;
-        # - return a Response object
-        # - return a Request object
-        # - or raise IgnoreRequest
-        return response
-
     def process_exception(self, request, exception, spider):
-        # Called when a download handler or a process_request()
-        # (from other downloader middleware) raises an exception.
-
-        # Must either:
-        # - return None: continue processing this exception
-        # - return a Response object: stops process_exception() chain
-        # - return a Request object: stops process_exception() chain
+        # self.EXCEPTIONS_TO_RETRY = (defer.TimeoutError, TimeoutError, DNSLookupError,
+        #                        ConnectionRefusedError, ConnectionDone, ConnectError,
+        #                        ConnectionLost, TCPTimedOutError, ResponseFailed,
+        #                        IOError, TunnelError)
+        #
+        # if isinstance(exception, self.EXCEPTIONS_TO_RETRY):
+        #     params = {
+        #         'ip': self.result,
+        #         'domin': 'jd.com'
+        #     }
+        #     request.get('http://127.0.0.1:5010/get/',params=params)
         pass
 
-    def spider_opened(self, spider):
-        spider.logger.info('Spider opened: %s' % spider.name)
+

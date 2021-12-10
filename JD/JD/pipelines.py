@@ -9,6 +9,7 @@ from itemadapter import ItemAdapter
 
 from .settings import MONGODB_URL
 from .spiders.jd_sort import JdSortSpider
+from .spiders.jd_shop import JdShopSpider
 from pymongo import MongoClient
 
 class Jd_SortPipeline(object):
@@ -24,4 +25,19 @@ class Jd_SortPipeline(object):
 
     def close_spider(self,spider):
         if isinstance(spider, JdSortSpider):
+            self.mongo.close()
+
+class Jd_ShopPipeline(object):
+    def open_spider(self,spider):
+        if isinstance(spider, JdShopSpider):
+            self.mongo = MongoClient(MONGODB_URL)
+            self.collection = self.mongo['jd']['shop']
+
+    def process_item(self, item, spider):
+        if isinstance(spider, JdShopSpider):
+            self.collection.insert_one(dict(item))
+        return item
+
+    def close_spider(self,spider):
+        if isinstance(spider, JdShopSpider):
             self.mongo.close()
