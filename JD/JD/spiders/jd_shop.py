@@ -39,19 +39,23 @@ class JdShopSpider(scrapy.Spider):
             yield scrapy.Request(product_url,callback=self.parse_product_base,meta={'item':item})
 
         url = sort['lit_sort_url']
-        next_page = re.search("s.init\((.*?), '",response.text,re.S).group(1).strip()
-        page = int(str(next_page.split(',')[0]).strip())
-        # print(page)
-        num_page_list = []
-        if page == 1:
+        try_num = 0
+        while try_num<3:
+            next_page = re.search("s.init\((.*?), '",response.text,re.S).group(1).strip()
+            # print(next_page)
+            page = int(str(next_page.split(',')[0]).strip())
             num_page = int(str(next_page.split(',')[1]).strip())
-            # print(num_page)
-            num_page_list.append(num_page)
-        else:
-            if page < num_page_list[0]:
-                next_url = url.split('?')[0] + '?' + 'page={}&'.format(page+1) + url.split('?')[1]
+            if page == 1:
+                next_url = url.split('?')[0] + '?' + 'page={}&'.format(page + 1) + url.split('?')[1]
                 # print(next_url)
-                yield scrapy.Request(next_url, callback=self.parse, meta={'item':sort})
+                yield scrapy.Request(next_url, callback=self.parse, meta={'item': sort})
+            else:
+                if page < num_page:
+                    next_url = url.split('?')[0] + '?' + 'page={}&'.format(page+1) + url.split('?')[1]
+                    # print("ddddddddd",next_url)
+                    yield scrapy.Request(next_url, callback=self.parse, meta={'item':sort})
+            try_num+=1
+
 
     def parse_product_base(self,response):
         item = response.meta['item']
