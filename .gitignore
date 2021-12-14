@@ -33,7 +33,7 @@ csvfile
 *.img
 *.png
 img
-yzm
+/yzm/
 yzm/*.jpg
 *.jpg
 result
