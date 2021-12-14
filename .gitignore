@@ -33,6 +33,7 @@ csvfile
 *.img
 *.png
 img
+yzm
 result
 
 service/请求头文件.txt
