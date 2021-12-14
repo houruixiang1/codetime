@@ -30,11 +30,11 @@ csvfile
 *.xls
 *.txt
 #JsSpider/login/js
-yzm/*.img
+*.img
 *.png
 img
 yzm
-*.jpg
+yzm/*.jpg
 result
 
 service/请求头文件.txt
