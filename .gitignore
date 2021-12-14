@@ -30,7 +30,7 @@ csvfile
 *.xls
 *.txt
 #JsSpider/login/js
-*.img
+yzm/*.img
 *.png
 img
 yzm
