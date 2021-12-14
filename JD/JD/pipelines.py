@@ -31,7 +31,7 @@ class Jd_ShopPipeline(object):
     def open_spider(self,spider):
         if isinstance(spider, JdShopSpider):
             self.mongo = MongoClient(MONGODB_URL)
-            self.collection = self.mongo['jd']['shop']
+            self.collection = self.mongo['jd']['shop_test']
 
     def process_item(self, item, spider):
         if isinstance(spider, JdShopSpider):

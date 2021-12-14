@@ -12,12 +12,12 @@ class JdShopSpider(scrapy.Spider):
 
     def start_requests(self):
         sort = {
-            'big_sort_name': '家用电器',
-            'big_sort_url': 'https://jiadian.jd.com',
-            'mid_sort_name': '电视',
-            'mid_sort_url': 'https://list.jd.com/list.html?cat=737,794,798',
-            'lit_sort_name': '全面屏电视',
-            'lit_sort_url': 'https://list.jd.com/list.html?cat=737,794,798&ev=4155_97865&sort=sort_rank_asc&trans=1&JL=3_%E7%94%B5%E8%A7%86%E7%B1%BB%E5%9E%8B_%E5%85%A8%E9%9D%A2%E5%B1%8F#J_crumbsBar'
+            "big_sort_name" : "男鞋",
+            "big_sort_url" : "https://phat.jd.com/10-185.html",
+            "mid_sort_name" : "流行男鞋",
+            "mid_sort_url" : "https://phat.jd.com/10-185.html",
+            "lit_sort_name" : "休闲鞋",
+            "lit_sort_url" : "https://list.jd.com/list.html?cat=11729,11730,6908"
         }
         url = sort['lit_sort_url']
         yield scrapy.Request(url,callback=self.parse,meta={'item':sort})

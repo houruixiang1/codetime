@@ -73,8 +73,9 @@ class JdDownloaderMiddleware:
     def process_request(self, request, spider):
         response = requests.get(url = 'http://127.0.0.1:5010/get/')
         self.result = json.loads(response.text)
-        proxy = 'http://' + self.result['proxy']
-        request.meta['proxy'] = proxy
+        proxy = self.result.get("proxy")
+        proxies = "http://{}".format(proxy)
+        request.meta['proxy'] = proxies
         return None
 
     def process_exception(self, request, exception, spider):
