@@ -34,7 +34,7 @@ csvfile
 *.png
 img
 yzm
-.jpg
+*.jpg
 result
 
 service/请求头文件.txt
