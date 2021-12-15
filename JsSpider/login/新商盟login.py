@@ -22,9 +22,9 @@ def encry_pwd(pwd):
 def get_code():
     response = session.get(url=ver_code_url, headers=headers)
     # print(response)
-    with open('C:\CodeTime\img\新商盟login_code.png', 'wb') as f:
+    with open('/img/3303.jpg', 'wb') as f:
         f.write(response.content)
-    image = Image.open('C:\CodeTime\img\新商盟login_code.png')
+    image = Image.open('/img/3303.jpg')
     image.show()
     code = input('请输入验证码: ')
     return code
