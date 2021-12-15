@@ -11,7 +11,7 @@ from keras.callbacks import EarlyStopping
 from keras.layers import Conv2D, MaxPooling2D
 
 # 读取数据
-df = pd.read_csv('C:\\Users\easub\CNN_4_Verifycode\data.csv')
+df = pd.read_csv('C://CodeTime/xxxx/data.csv')
 
 # 标签值
 vals = range(31)
@@ -83,7 +83,7 @@ n_epochs = 100
 history = model.fit(x_train, y_train, batch_size=batch_size, epochs=n_epochs, \
                     verbose=1, validation_data=(x_test, y_val), callbacks=callbacks)
 
-mp = 'C:/Users/easub/CNN_4_Verifycode/verifycode_Keras.h5'
+mp = 'C://CodeTime/xxxx/verifycode_Keras.h5'
 model.save(mp)
 
 # 绘制验证集上的准确率曲线
