@@ -5,7 +5,7 @@ from PIL import Image                   #图片处理
 import numpy as np                      #矩阵运算
 import csv
 #准备词云所需的文字（词）
-with open(r'../../../pycharmprojects/雪球基金_flask/爬虫/汽车销售.csv','rt', encoding="utf-8") as csvfile:
+with open(r'../../../pycharmprojects/flasktest/爬虫/汽车销售.csv','rt', encoding="utf-8") as csvfile:
     reader = csv.DictReader(csvfile)
     #print(reader)
     # list = ""
@@ -16,7 +16,7 @@ with open(r'../../../pycharmprojects/雪球基金_flask/爬虫/汽车销售.csv'
     text=" ".join(text)
 #分词
 seg = jieba.cut(text)
-with open(r'../../../pycharmprojects/雪球基金_flask/wordcloud/stop_words.txt', "r", encoding="utf-8") as f:
+with open(r'../../../pycharmprojects/flasktest/wordcloud/stop_words.txt', "r", encoding="utf-8") as f:
     stop_words = [w.split("\n")[0] for w in f.readlines()]
     # 去重
     stop_words = set(stop_words)
@@ -27,7 +27,7 @@ for w in seg:
         word_list.append(w)
 string = ' '.join(word_list)
 print(len(string))
-img = Image.open(r'../../../pycharmprojects/雪球基金_flask/static/assets/img/tree.jpg')   #打开遮罩图片
+img = Image.open(r'../../../pycharmprojects/flasktest/static/assets/img/tree.jpg')   #打开遮罩图片
 img_array = np.array(img)   #将图片转换为数组
 wc = WordCloud(
     background_color='white',
@@ -41,7 +41,7 @@ plt.imshow(wc)
 plt.axis('off')     #是否显示坐标轴
 #plt.show()    #显示生成的词云图片
 #输出词云图片到文件
-plt.savefig(r'../../../pycharmprojects/雪球基金_flask/static/assets/img/汽车销售树.jpg',dpi=300,facecolor='pink', format='jpg', bbox_inches='tight', transparent=True)
+plt.savefig(r'../../../pycharmprojects/flasktest/static/assets/img/汽车销售树.jpg',dpi=300,facecolor='pink', format='jpg', bbox_inches='tight', transparent=True)
 
 
 
