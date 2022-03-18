@@ -10,7 +10,7 @@
       <excludeFolder url="file://$MODULE_DIR$/JsSpider/爬百度小说-异步协程/西游记" />
       <excludeFolder url="file://$MODULE_DIR$/JsSpider/爬虎牙图片/LoLpic" />
     </content>
-    <orderEntry type="jdk" jdkName="Python 3.7 (pythonProject1)" jdkType="Python SDK" />
+    <orderEntry type="jdk" jdkName="Python 3.7" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
 </module>

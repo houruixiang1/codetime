@@ -13,10 +13,12 @@ import redis
 import requests
 import scrapy
 from scrapy.utils.project import get_project_settings
+# get_project_settings获得setting.py文件中的配置
 from scrapy_redis.spiders import RedisSpider
 from urllib.request import urlretrieve
+# urlretrieve直接将远程数据下载到本地。
 import ssl
-ssl._create_default_https_context = ssl._create_unverified_context
+ssl._create_default_https_context = ssl._create_unverified_context  #全局取消证书验证
 
 
 class CeshipeopleSpider(RedisSpider):
@@ -47,12 +49,12 @@ class CeshipeopleSpider(RedisSpider):
         if node == 'master':
             settings = get_project_settings()
             r = redis.Redis(host=settings.get("REDIS_HOST"), port=settings.get("REDIS_PORT"), decode_responses=True)
-            url ='http://search.people.cn/search-platform/front/search'
+            url = 'http://search.people.cn/search-platform/front/search'
             # print("hello99",self.parse_page_num())
             pages = self.parse_page_num()
             # print(pages)
             # for page in pages:
-            for i,j in enumerate(self.js):
+            for i, j in enumerate(self.js):
                 page = pages[i]
                 # print(page)
                 page_num = min(page,10)
@@ -60,8 +62,8 @@ class CeshipeopleSpider(RedisSpider):
                     request_data = {
                         'url': url,
                         'meta': {'key_words': self.keywords,
-                                 'page':x,
-                                 'type':j
+                                 'page': x,
+                                 'type': j
                                  }
                     }
                     r.lpush(self.redis_key, json.dumps(request_data))  #1.r.lpush列表  2.字典转换为字符串

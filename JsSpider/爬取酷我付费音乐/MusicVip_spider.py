@@ -22,8 +22,8 @@ for i in detail_data:
     music_name = i['name']
     music_rid = i['rid']
     print(music_name,music_rid)
-    Vipurl = "http://www.kuwo.cn/api/v1/www/music/playUrl?mid={}&type=music&httpsStatus=1&reqId=e555c921-5e4d-11ec-a3a6-ebf039e122ac".format(music_rid)
-    music_url = requests.get(url=Vipurl,headers=headers).json()['data']['url']
+    Vipurl = "http://kuwo.cn/url?format=mp3&rid={}&response=url&type=convert_url3&br=128kmp3&from=web&t=1632022881917&httpsStatus=1&reqId=74ecb2d1-18fb-11ec-8f2f-27222b47caa2".format(music_rid)
+    music_url = requests.get(url=Vipurl,headers=headers).json()['url']
     with open('./KWmusicVip_download/'+music_name+'.mp3','wb') as f:
         mp3_download = requests.get(url=music_url,headers=headers).content
         f.write(mp3_download)
